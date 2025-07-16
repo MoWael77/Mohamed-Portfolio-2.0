@@ -5,11 +5,34 @@ import { useState, useEffect, useRef } from "react"
 import Image from "next/image"
 import type { JSX } from "react/jsx-runtime"
 
+// Utility function to detect and format URLs as clickable links
+const formatOutputWithLinks = (text: string): string | JSX.Element => {
+  const urlRegex = /(https?:\/\/[^\s]+)/g
+  const parts = text.split(urlRegex)
+
+  return parts.map((part, index) => {
+    if (part.match(urlRegex)) {
+      return (
+        <a
+          key={index}
+          href={part}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-400 underline hover:text-blue-300"
+        >
+          {part}
+        </a>
+      )
+    }
+    return part
+  })
+}
+
 interface Command {
   command: string
   output: string | JSX.Element
   isTyping?: boolean
-  typedOutput?: string
+  typedOutput?: string | JSX.Element
 }
 
 export default function TerminalPortfolio() {
@@ -20,10 +43,8 @@ export default function TerminalPortfolio() {
 
 Welcome to my interactive portfolio terminal!
 Type 'help' to see available commands.`,
-      typedOutput: `Hi, I'm Mohamed Wael, a Software, & Cybersecurity Engineer.
-
-Welcome to my interactive portfolio terminal!
-Type 'help' to see available commands.`,
+      typedOutput: "",
+      isTyping: true,
     },
   ])
   const [currentInput, setCurrentInput] = useState("")
@@ -49,23 +70,20 @@ Type 'help' to see available commands.`,
     const mouseX = e.clientX
     const mouseY = e.clientY
 
-    // Calculate rotation based on mouse position
     const rotateYValue = ((mouseX - centerX) / rect.width) * 30
     const rotateXValue = ((centerY - mouseY) / rect.height) * 30
 
     setRotateX(rotateXValue)
     setRotateY(rotateYValue)
-    setTranslateY(-5) // Slight lift on hover
+    setTranslateY(-5)
   }
 
   const handleMouseLeave = () => {
     setIsHovered(false)
-    // Hanging/dropping animation
     setRotateX(15)
     setRotateY(-10)
-    setTranslateY(10) // Drop down effect
+    setTranslateY(10)
 
-    // Subtle swing animation
     setTimeout(() => {
       setRotateX(8)
       setRotateY(-12)
@@ -181,19 +199,16 @@ Network Engineer | AAIB (Sept 2024 - Oct 2024)
     contact: `Contact Information:
 
 Email: mw056164@gmail.com
-LinkedIn: linkedin.com/in/mohamedwael7
-GitHub: @MoWael77
+LinkedIn: https://www.linkedin.com/in/mohamedwael7/
+GitHub: https://github.com/MoWael77
 
 Feel free to reach out for collaborations, opportunities,
 or just to connect and chat about technology!`,
 
     education: `Educational Background:
 
-
-
 Bachelor of Computer Science specilizing in CyberSecurity
 Misr International University | 2023 - 2027
-
 
 Relevant Coursework:
 • CCNA & Malware analysis
@@ -206,15 +221,13 @@ Relevant Coursework:
 EC-council Malware analysis (2024)
 EC-council Digital Forensics (2024)
 
-
 Continuous learning is key in our rapidly evolving field!`,
 
     leadership: `Leadership & Community:
 
 Technical Lead | at MSP MIU
 • Leading a team of 5 engineers
-• Instructing new learning subjects and methods for the next generation `
-,
+• Instructing new learning subjects and methods for the next generation `,
 
     sudo: "Permission denied. Nice try though! 😄",
   }
@@ -230,13 +243,16 @@ Technical Lead | at MSP MIU
         prev.map((cmd, idx) => (idx === commandIndex ? { ...cmd, typedOutput: typedText, isTyping: true } : cmd)),
       )
 
-      // Variable typing speed for more realistic effect
       const delay = chars[i] === "\n" ? 50 : Math.random() * 30 + 10
       await new Promise((resolve) => setTimeout(resolve, delay))
     }
 
-    // Mark typing as complete
-    setCommands((prev) => prev.map((cmd, idx) => (idx === commandIndex ? { ...cmd, isTyping: false } : cmd)))
+    const formattedOutput = formatOutputWithLinks(text)
+    setCommands((prev) =>
+      prev.map((cmd, idx) =>
+        idx === commandIndex ? { ...cmd, output: formattedOutput, isTyping: false } : cmd
+      ),
+    )
   }
 
   const handleCommand = async (cmd: string) => {
@@ -249,7 +265,6 @@ Technical Lead | at MSP MIU
 
     setIsProcessing(true)
 
-    // Add command to history immediately
     const output = commandResponses[trimmedCmd] || `Command not found: ${cmd}. Type 'help' for available commands.`
     const newCommand: Command = {
       command: cmd,
@@ -260,10 +275,8 @@ Technical Lead | at MSP MIU
 
     setCommands((prev) => [...prev, newCommand])
 
-    // Small delay before starting to type
     await new Promise((resolve) => setTimeout(resolve, 300))
 
-    // Start typing animation
     const commandIndex = commands.length
     await typeText(output, commandIndex)
 
@@ -291,13 +304,11 @@ Technical Lead | at MSP MIU
 
   return (
     <div className="min-h-screen bg-black text-green-400 font-mono">
-      {/* Header */}
       <div className="p-4 border-b border-green-800">
         <h1 className="text-2xl font-bold text-green-400">Mohamed Wael</h1>
         <p className="text-green-600">DevSecOps Engineer</p>
       </div>
 
-      {/* Navigation */}
       <div className="border-b border-green-800 p-2">
         <div className="flex flex-wrap gap-4 text-sm">
           {[
@@ -328,16 +339,13 @@ Technical Lead | at MSP MIU
       </div>
 
       <div className="flex flex-col lg:flex-row h-[calc(100vh-120px)]">
-        {/* 3D Card Section */}
         <div className="lg:w-1/3 p-8 flex items-center justify-center border-r border-green-800 relative">
           <div className="relative">
-            {/* Hanging Chain/String */}
             <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-16">
               <div className="w-1 h-16 bg-gradient-to-b from-gray-600 to-gray-800 rounded-full shadow-lg"></div>
               <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-2 w-3 h-3 bg-gray-700 rounded-full shadow-lg"></div>
             </div>
 
-            {/* Interactive 3D Card */}
             <div
               className="card-container relative cursor-pointer"
               onMouseMove={handleMouseMove}
@@ -353,12 +361,10 @@ Technical Lead | at MSP MIU
                 }}
               >
                 <div className="flex flex-col items-center h-full relative">
-                  {/* Logo/Brand */}
                   <div className="w-16 h-16 bg-green-400 rounded-lg flex items-center justify-center mb-4 shadow-lg">
                     <span className="text-black font-bold text-xl">MW</span>
                   </div>
 
-                  {/* Profile Image */}
                   <div className="w-32 h-32 rounded-full overflow-hidden mb-4 border-2 border-green-400 shadow-lg">
                     <Image
                       src="/profile.jpg"
@@ -369,14 +375,12 @@ Technical Lead | at MSP MIU
                     />
                   </div>
 
-                  {/* Info */}
                   <div className="text-center">
                     <p className="text-green-400 font-bold text-lg">Mohamed Wael</p>
                     <p className="text-green-600 text-sm">DevSecOps Engineer</p>
                     <p className="text-green-500 text-xs mt-1">Cairo, Egypt</p>
                   </div>
 
-                  {/* Glowing effect on hover */}
                   <div
                     className={`absolute inset-0 rounded-2xl transition-opacity duration-300 ${
                       isHovered ? "opacity-20" : "opacity-0"
@@ -392,7 +396,6 @@ Technical Lead | at MSP MIU
           </div>
         </div>
 
-        {/* Terminal Section */}
         <div className="lg:w-2/3 flex flex-col">
           <div ref={terminalRef} className="flex-1 p-4 overflow-y-auto">
             {commands.map((cmd, index) => (
@@ -403,13 +406,12 @@ Technical Lead | at MSP MIU
                   <span className="text-green-400">$ {cmd.command}</span>
                 </div>
                 <div className="text-green-300 ml-4 whitespace-pre-wrap">
-                  {cmd.typedOutput || cmd.output}
+                  {cmd.isTyping ? cmd.typedOutput : cmd.output}
                   {cmd.isTyping && <span className="animate-pulse bg-green-400 text-green-400">█</span>}
                 </div>
               </div>
             ))}
 
-            {/* Current Input Line */}
             <form onSubmit={handleSubmit} className="flex items-center">
               <span className="text-blue-400">mo_77@portfolio:</span>
               <span className="text-white">~</span>
@@ -427,7 +429,6 @@ Technical Lead | at MSP MIU
             </form>
           </div>
 
-          {/* Footer with timestamp */}
           <div className="p-4 border-t border-green-800 flex justify-between items-center">
             <span className="text-green-600 text-sm">mo_77@portfolio:~$</span>
             <span className="text-green-600 text-sm">{currentTime}</span>
