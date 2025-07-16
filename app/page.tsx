@@ -47,6 +47,15 @@ Type 'help' to see available commands.`,
       isTyping: true,
     },
   ])
+
+  
+  // Add this useEffect to trigger typing on mount
+  useEffect(() => {
+    const typeWelcomeMessage = async () => {
+      await typeText(commands[0].output as string, 0)
+    }
+    typeWelcomeMessage()
+  }, []) 
   const [currentInput, setCurrentInput] = useState("")
   const [currentTime, setCurrentTime] = useState("")
   const [isProcessing, setIsProcessing] = useState(false)
