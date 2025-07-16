@@ -1,0 +1,123 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+.rotate-3d {
+  transform: perspective(1000px) rotateY(-15deg) rotateX(10deg);
+}
+
+.rotate-3d:hover {
+  transform: perspective(1000px) rotateY(-10deg) rotateX(5deg) scale(1.05);
+}
+
+/* Custom scrollbar for terminal */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #22c55e;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #16a34a;
+}
+
+/* Blinking cursor animation */
+@keyframes blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  51%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.cursor-blink {
+  animation: blink 1s infinite;
+}
+
+/* Typing indicator */
+.typing-indicator {
+  display: inline-block;
+  width: 8px;
+  height: 16px;
+  background-color: #22c55e;
+  animation: blink 1s infinite;
+}
+
+/* Enhanced 3D Card Styles */
+.card-container {
+  perspective: 1000px;
+}
+
+.card {
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: 20px;
+  background: linear-gradient(to bottom, #4b5563, #374151);
+  border-radius: 1px;
+}
+
+/* Realistic shadow that moves with card */
+.card::after {
+  content: "";
+  position: absolute;
+  bottom: -30px;
+  left: 10%;
+  right: 10%;
+  height: 20px;
+  background: radial-gradient(ellipse, rgba(0, 0, 0, 0.3) 0%, transparent 70%);
+  transform: rotateX(90deg) translateZ(-30px);
+  filter: blur(10px);
+}
+
+/* Smooth transitions for all card movements */
+.card {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Glowing border effect on hover */
+.card:hover {
+  box-shadow: 0 0 20px rgba(34, 197, 94, 0.3), 0 0 40px rgba(34, 197, 94, 0.1), 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Chain/string animation */
+@keyframes sway {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(2deg);
+  }
+}
+
+.card-container:hover .chain {
+  animation: sway 2s ease-in-out infinite;
+}
