@@ -350,9 +350,21 @@ Technical Lead | at MSP MIU
       <div className="flex flex-col lg:flex-row h-[calc(100vh-120px)]">
         <div className="lg:w-1/3 p-8 flex items-center justify-center border-r border-green-800 relative">
           <div className="relative">
-            <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-16">
-              <div className="w-1 h-16 bg-gradient-to-b from-gray-600 to-gray-800 rounded-full shadow-lg"></div>
-              <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-2 w-3 h-3 bg-gray-700 rounded-full shadow-lg"></div>
+            {/* Lanyard */}
+            <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-20">
+              {/* Lanyard strap */}
+              <div className="w-4 h-20 bg-gradient-to-b from-gray-700 to-gray-800 rounded-sm shadow-lg relative">
+                {/* Lanyard texture lines */}
+                <div className="absolute inset-0 flex flex-col justify-evenly">
+                  <div className="w-full h-px bg-gray-600 opacity-50"></div>
+                  <div className="w-full h-px bg-gray-600 opacity-50"></div>
+                  <div className="w-full h-px bg-gray-600 opacity-50"></div>
+                </div>
+              </div>
+              {/* Lanyard clip */}
+              <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-6 h-4 bg-gray-600 rounded-sm shadow-md">
+                <div className="absolute top-1 left-1/2 transform -translate-x-1/2 w-2 h-1 bg-gray-800 rounded-full"></div>
+              </div>
             </div>
 
             <div
@@ -363,44 +375,55 @@ Technical Lead | at MSP MIU
             >
               <div
                 ref={cardRef}
-                className="card bg-gray-900 rounded-2xl p-6 border border-green-800 shadow-2xl w-64 h-80 transition-all duration-300 ease-out"
+                className="card bg-white rounded-xl border-2 border-gray-300 shadow-2xl w-64 h-80 transition-all duration-300 ease-out overflow-hidden"
                 style={{
                   transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(${translateY}px)`,
                   transformOrigin: "center top",
                 }}
               >
-                <div className="flex flex-col items-center h-full relative">
-                  <div className="w-16 h-16 bg-green-400 rounded-lg flex items-center justify-center mb-4 shadow-lg">
-                    <span className="text-black font-bold text-xl">MW</span>
+                <div className="relative h-full w-full">
+                  {/* Card header with company logo area */}
+                  <div className="absolute top-0 left-0 right-0 h-12 bg-gradient-to-r from-blue-600 to-blue-800 flex items-center justify-center z-10">
+                    <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                      <span className="text-blue-600 font-bold text-sm">MW</span>
+                    </div>
                   </div>
 
-                  <div className="w-32 h-32 rounded-full overflow-hidden mb-4 border-2 border-green-400 shadow-lg">
+                  {/* Full card photo */}
+                  <div className="absolute inset-0 w-full h-full">
                     <Image
                       src="/profile.jpg"
                       alt="Mohamed Wael"
-                      width={128}
-                      height={128}
-                      className="w-full h-full object-cover"
+                      width={256}
+                      height={320}
+                      className="w-full h-full object-cover object-center"
                     />
                   </div>
 
-                  <div className="text-center">
-                    <p className="text-green-400 font-bold text-lg">Mohamed Wael</p>
-                    <p className="text-green-600 text-sm">DevSecOps Engineer</p>
-                    <p className="text-green-500 text-xs mt-1">Cairo, Egypt</p>
+                  {/* Card overlay for text */}
+                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/60 to-transparent p-4">
+                    <div className="text-center text-white">
+                      <p className="font-bold text-lg drop-shadow-lg">Mohamed Wael</p>
+                      <p className="text-sm opacity-90 drop-shadow-md">DevSecOps Engineer</p>
+                      <p className="text-xs opacity-80 mt-1 drop-shadow-md">Cairo, Egypt</p>
+                    </div>
                   </div>
 
+                  {/* Card shine effect */}
                   <div
-                    className={`absolute inset-0 rounded-2xl transition-opacity duration-300 ${
+                    className={`absolute inset-0 rounded-xl transition-opacity duration-300 ${
                       isHovered ? "opacity-20" : "opacity-0"
-                    } bg-gradient-to-br from-green-400 via-transparent to-blue-400 pointer-events-none`}
+                    } bg-gradient-to-br from-white via-transparent to-blue-200 pointer-events-none`}
                   ></div>
+
+                  {/* Holographic security strip */}
+                  <div className="absolute top-16 right-2 w-1 h-32 bg-gradient-to-b from-purple-400 via-pink-400 to-blue-400 opacity-60 rounded-full"></div>
                 </div>
               </div>
             </div>
 
             <div className="text-center mt-10">
-              <span className="text-green-600 text-sm animate-pulse">[Interactive 3D Card]</span>
+              <span className="text-green-600 text-sm animate-pulse">[Interactive ID Card]</span>
             </div>
           </div>
         </div>
