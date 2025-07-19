@@ -382,11 +382,6 @@ Technical Lead | at MSP MIU
                 }}
               >
                 <div className="relative h-full w-full">
-                  {/* Card header with company logo area */}
-                  <div className="absolute top-0 left-0 right-0 h-12 bg-gradient-to-r from-blue-600 to-blue-800 flex items-center justify-center z-10">
-
-                  </div>
-
                   {/* Full card photo */}
                   <div className="absolute inset-0 w-full h-full">
                     <Image
