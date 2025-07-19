@@ -388,7 +388,7 @@ Technical Lead | at MSP MIU
           <div className="relative">
             {/* Realistic Lanyard System */}
             <div 
-              className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-24 transition-transform duration-200 ease-out"
+              className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-22 transition-transform duration-200 ease-out"
               style={{
                 transform: `translateX(-50%) translateY(-96px) rotate(${lanyardRotation}deg)`,
                 transformOrigin: 'center top'
