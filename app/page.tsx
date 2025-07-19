@@ -384,9 +384,7 @@ Technical Lead | at MSP MIU
                 <div className="relative h-full w-full">
                   {/* Card header with company logo area */}
                   <div className="absolute top-0 left-0 right-0 h-12 bg-gradient-to-r from-blue-600 to-blue-800 flex items-center justify-center z-10">
-                    <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                      <span className="text-blue-600 font-bold text-sm">MW</span>
-                    </div>
+
                   </div>
 
                   {/* Full card photo */}
