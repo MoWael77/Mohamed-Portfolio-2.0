@@ -393,7 +393,7 @@ Technical Lead | at MSP MIU
                       src="/profile.jpg"
                       alt="Mohamed Wael"
                       width={256}
-                      height={320}
+                      height={360}
                       className="w-full h-full object-cover object-center"
                     />
                   </div>
