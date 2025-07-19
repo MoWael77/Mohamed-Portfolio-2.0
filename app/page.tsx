@@ -67,8 +67,34 @@ Type 'help' to see available commands.`,
   const [translateY, setTranslateY] = useState(0)
   const [isHovered, setIsHovered] = useState(false)
   const cardRef = useRef<HTMLDivElement>(null)
+  const [lanyardRotation, setLanyardRotation] = useState(0)
+  const [cardSwing, setCardSwing] = useState(0)
+  const [isSwaying, setIsSwaying] = useState(true)
+
+  // Natural swaying animation
+  useEffect(() => {
+    let animationFrame: number
+    let startTime = Date.now()
+    
+    const animate = () => {
+      if (isSwaying && !isHovered) {
+        const elapsed = (Date.now() - startTime) / 1000
+        const swayAmount = Math.sin(elapsed * 0.8) * 2 // Gentle sway
+        const lanyardSway = Math.sin(elapsed * 0.8) * 1.5
+        
+        setCardSwing(swayAmount)
+        setLanyardRotation(lanyardSway)
+        setRotateY(-15 + swayAmount)
+      }
+      animationFrame = requestAnimationFrame(animate)
+    }
+    
+    animate()
+    return () => cancelAnimationFrame(animationFrame)
+  }, [isSwaying, isHovered])
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    setIsSwaying(false)
     if (!cardRef.current) return
 
     const card = cardRef.current
@@ -82,32 +108,42 @@ Type 'help' to see available commands.`,
     const rotateYValue = ((mouseX - centerX) / rect.width) * 30
     const rotateXValue = ((centerY - mouseY) / rect.height) * 30
 
+    // More realistic movement with momentum
     setRotateX(rotateXValue)
     setRotateY(rotateYValue)
-    setTranslateY(-5)
+    setTranslateY(-8)
+    setLanyardRotation(rotateYValue * 0.3)
+    setCardSwing(rotateYValue * 0.5)
   }
 
   const handleMouseLeave = () => {
     setIsHovered(false)
-    setRotateX(15)
-    setRotateY(-10)
-    setTranslateY(10)
+    
+    // Realistic bounce back animation
+    setRotateX(20)
+    setRotateY(-8)
+    setTranslateY(15)
+    setLanyardRotation(3)
 
     setTimeout(() => {
-      setRotateX(8)
-      setRotateY(-12)
-      setTranslateY(5)
-    }, 200)
+      setRotateX(5)
+      setRotateY(-18)
+      setTranslateY(-3)
+      setLanyardRotation(-1)
+    }, 150)
 
     setTimeout(() => {
       setRotateX(10)
       setRotateY(-15)
       setTranslateY(0)
-    }, 400)
+      setLanyardRotation(0)
+      setIsSwaying(true)
+    }, 300)
   }
 
   const handleMouseEnter = () => {
     setIsHovered(true)
+    setIsSwaying(false)
   }
 
   useEffect(() => {
@@ -350,20 +386,48 @@ Technical Lead | at MSP MIU
       <div className="flex flex-col lg:flex-row h-[calc(100vh-120px)]">
         <div className="lg:w-1/3 p-8 flex items-center justify-center border-r border-green-800 relative">
           <div className="relative">
-            {/* Lanyard */}
-            <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-20">
-              {/* Lanyard strap */}
-              <div className="w-4 h-20 bg-gradient-to-b from-gray-700 to-gray-800 rounded-sm shadow-lg relative">
-                {/* Lanyard texture lines */}
-                <div className="absolute inset-0 flex flex-col justify-evenly">
-                  <div className="w-full h-px bg-gray-600 opacity-50"></div>
-                  <div className="w-full h-px bg-gray-600 opacity-50"></div>
-                  <div className="w-full h-px bg-gray-600 opacity-50"></div>
+            {/* Realistic Lanyard System */}
+            <div 
+              className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-24 transition-transform duration-200 ease-out"
+              style={{
+                transform: `translateX(-50%) translateY(-96px) rotate(${lanyardRotation}deg)`,
+                transformOrigin: 'center top'
+              }}
+            >
+              {/* Main lanyard strap */}
+              <div className="w-5 h-24 bg-gradient-to-b from-gray-600 via-gray-700 to-gray-800 rounded-sm shadow-xl relative overflow-hidden">
+                {/* Fabric texture */}
+                <div className="absolute inset-0 opacity-30">
+                  <div className="w-full h-px bg-gray-500 mt-2"></div>
+                  <div className="w-full h-px bg-gray-500 mt-4"></div>
+                  <div className="w-full h-px bg-gray-500 mt-4"></div>
+                  <div className="w-full h-px bg-gray-500 mt-4"></div>
+                  <div className="w-full h-px bg-gray-500 mt-4"></div>
                 </div>
+                {/* Stitching detail */}
+                <div className="absolute left-1 top-0 bottom-0 w-px bg-gray-500 opacity-40"></div>
+                <div className="absolute right-1 top-0 bottom-0 w-px bg-gray-500 opacity-40"></div>
               </div>
-              {/* Lanyard clip */}
-              <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-6 h-4 bg-gray-600 rounded-sm shadow-md">
-                <div className="absolute top-1 left-1/2 transform -translate-x-1/2 w-2 h-1 bg-gray-800 rounded-full"></div>
+              
+              {/* Metal clip connector */}
+              <div className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-8 h-6 bg-gradient-to-b from-gray-400 to-gray-600 rounded-sm shadow-lg border border-gray-500">
+                {/* Clip mechanism */}
+                <div className="absolute top-1 left-1/2 transform -translate-x-1/2 w-3 h-2 bg-gray-800 rounded-sm"></div>
+                <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-4 h-1 bg-gray-300 rounded-full"></div>
+                {/* Metal shine */}
+                <div className="absolute top-0 left-0 w-2 h-2 bg-white opacity-30 rounded-full blur-sm"></div>
+              </div>
+              
+              {/* Connection point to card */}
+              <div className="absolute -bottom-5 left-1/2 transform -translate-x-1/2 w-1 h-2 bg-gray-600"></div>
+            </div>
+
+            {/* Card holder/badge reel simulation */}
+            <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-32">
+              <div className="w-8 h-8 bg-gradient-to-br from-gray-300 to-gray-500 rounded-full shadow-lg border-2 border-gray-400">
+                <div className="absolute inset-1 bg-gradient-to-br from-gray-200 to-gray-400 rounded-full">
+                  <div className="absolute top-1 left-1 w-2 h-2 bg-white opacity-50 rounded-full blur-sm"></div>
+                </div>
               </div>
             </div>
 
@@ -375,12 +439,16 @@ Technical Lead | at MSP MIU
             >
               <div
                 ref={cardRef}
-                className="card bg-white rounded-xl border-2 border-gray-300 shadow-2xl w-64 h-80 transition-all duration-300 ease-out overflow-hidden"
+                className="card bg-white rounded-lg border border-gray-400 shadow-2xl w-64 h-80 overflow-hidden relative"
                 style={{
-                  transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(${translateY}px)`,
+                  transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY + cardSwing}deg) translateY(${translateY}px)`,
                   transformOrigin: "center top",
+                  transition: isHovered ? 'none' : 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
                 }}
               >
+                {/* Card hole for lanyard */}
+                <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-gray-400 rounded-full shadow-inner"></div>
+                
                 <div className="relative h-full w-full">
                   {/* Full card photo */}
                   <div className="absolute inset-0 w-full h-full">
