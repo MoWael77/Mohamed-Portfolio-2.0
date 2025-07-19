@@ -423,7 +423,13 @@ Technical Lead | at MSP MIU
             </div>
 
             {/* Card holder/badge reel simulation */}
-            <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-32">
+           <div 
+  className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-24 transition-transform duration-200 ease-out"
+  style={{
+    transform: `translateX(-50%) translateY(-96px) rotate(${lanyardRotation}deg)`,
+    transformOrigin: 'center top'
+  }}
+>
               <div className="w-8 h-8 bg-gradient-to-br from-gray-300 to-gray-500 rounded-full shadow-lg border-2 border-gray-400">
                 <div className="absolute inset-1 bg-gradient-to-br from-gray-200 to-gray-400 rounded-full">
                   <div className="absolute top-1 left-1 w-2 h-2 bg-white opacity-50 rounded-full blur-sm"></div>
