@@ -11,14 +11,6 @@
   }
 }
 
-.rotate-3d {
-  transform: perspective(1000px) rotateY(-15deg) rotateX(10deg);
-}
-
-.rotate-3d:hover {
-  transform: perspective(1000px) rotateY(-10deg) rotateX(5deg) scale(1.05);
-}
-
 /* Custom scrollbar for terminal */
 ::-webkit-scrollbar {
   width: 8px;
@@ -53,26 +45,63 @@
   animation: blink 1s infinite;
 }
 
-/* Typing indicator */
-.typing-indicator {
-  display: inline-block;
-  width: 8px;
-  height: 16px;
-  background-color: #22c55e;
-  animation: blink 1s infinite;
-}
-
-/* Enhanced 3D Card Styles */
-.card-container {
-  perspective: 1000px;
-}
-
-.card {
+/* Hover-Physics 3D Card Styles */
+.hover-physics-card {
   transform-style: preserve-3d;
   backface-visibility: hidden;
+  position: relative;
+  transition: none; /* Physics handles movement, not CSS transitions */
+  will-change: transform;
+  user-select: none;
 }
 
-.card::before {
+/* Hovered state for visual feedback */
+.hover-physics-card.hovered {
+  filter: brightness(1.1);
+  box-shadow: 0 0 30px rgba(34, 197, 94, 0.4), 0 0 60px rgba(34, 197, 94, 0.2), 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* Card faces for front/back */
+.card-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 1rem;
+}
+
+.card-front {
+  transform: rotateY(0deg);
+}
+
+.card-back {
+  transform: rotateY(180deg);
+  background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+  border: 1px solid #22c55e;
+}
+
+/* Dynamic shadow that responds to hover */
+.hover-physics-card::after {
+  content: "";
+  position: absolute;
+  bottom: -35px;
+  left: 15%;
+  right: 15%;
+  height: 25px;
+  background: radial-gradient(ellipse, rgba(0, 0, 0, 0.4) 0%, transparent 70%);
+  transform: rotateX(90deg) translateZ(-35px);
+  filter: blur(12px);
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+}
+
+.hover-physics-card.hovered::after {
+  opacity: 0.8;
+  filter: blur(15px);
+}
+
+/* Hanging chain connection */
+.hover-physics-card::before {
   content: "";
   position: absolute;
   top: -20px;
@@ -82,42 +111,59 @@
   height: 20px;
   background: linear-gradient(to bottom, #4b5563, #374151);
   border-radius: 1px;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
 }
 
-/* Realistic shadow that moves with card */
-.card::after {
-  content: "";
-  position: absolute;
-  bottom: -30px;
-  left: 10%;
-  right: 10%;
-  height: 20px;
-  background: radial-gradient(ellipse, rgba(0, 0, 0, 0.3) 0%, transparent 70%);
-  transform: rotateX(90deg) translateZ(-30px);
-  filter: blur(10px);
+/* Prevent text selection during interaction */
+.hover-physics-card * {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  pointer-events: none; /* Allows mouse events on parent container */
 }
 
-/* Smooth transitions for all card movements */
-.card {
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+/* Smooth rendering optimizations */
+.hover-physics-card {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
 }
 
-/* Glowing border effect on hover */
-.card:hover {
-  box-shadow: 0 0 20px rgba(34, 197, 94, 0.3), 0 0 40px rgba(34, 197, 94, 0.1), 0 10px 30px rgba(0, 0, 0, 0.3);
+/* Cursor states on the container */
+.relative.w-full.h-full.flex.items-center.justify-center {
+  cursor: grab;
 }
 
-/* Chain/string animation */
-@keyframes sway {
-  0%,
-  100% {
-    transform: rotate(0deg);
-  }
-  50% {
-    transform: rotate(2deg);
-  }
+.relative.w-full.h-full.flex.items-center.justify-center:hover {
+  cursor: grabbing;
 }
 
-.card-container:hover .chain {
-  animation: sway 2s ease-in-out infinite;
+/* Project Card styles (from previous request) */
+.project-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Ensures consistent height */
+}
+.project-card img {
+  width: 100%;
+  height: 200px; /* Fixed height for images */
+  object-fit: cover;
+  border-radius: 8px 8px 0 0;
+}
+.project-card .card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+}
+.project-card .card-footer {
+  margin-top: auto; /* Pushes footer to bottom */
+}
+
+footer,
+.v0-attribution,
+[class*="built-with"] {
+  display: none !important;
 }
