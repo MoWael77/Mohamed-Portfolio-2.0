@@ -445,7 +445,7 @@ Technical Lead | at MSP MIU
             >
               <div
                 ref={cardRef}
-                className="card bg-white rounded-lg border border-gray-400 shadow-2xl w-64 h-80 overflow-hidden relative"
+                className="card bg-black rounded-lg border border-green-800 shadow-2xl w-64 h-80 overflow-hidden relative"
                 style={{
                   transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY + cardSwing}deg) translateY(${translateY}px)`,
                   transformOrigin: "center top",
@@ -453,7 +453,7 @@ Technical Lead | at MSP MIU
                 }}
               >
                 {/* Card hole for lanyard */}
-                <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-gray-400 rounded-full shadow-inner"></div>
+                <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-green-800 rounded-full shadow-inner"></div>
                 
                 <div className="relative h-full w-full">
                   {/* Full card photo */}
