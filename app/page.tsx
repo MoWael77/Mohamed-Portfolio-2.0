@@ -384,13 +384,13 @@ Technical Lead | at MSP MIU
       </div>
 
       <div className="flex flex-col lg:flex-row h-[calc(100vh-120px)]">
-        <div className="lg:w-1/3 p-8 flex items-center justify-center border-r border-green-800 relative">
+        <div className="lg:w-1/3 p-8 flex items-center justify-center border-r border-green-800 relative pt-16 lg:pt-8">
           <div className="relative">
             {/* Realistic Lanyard System */}
             <div 
-              className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-22 transition-transform duration-200 ease-out"
+              className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-16 lg:-translate-y-22 transition-transform duration-200 ease-out"
               style={{
-                transform: `translateX(-50%) translateY(-96px) rotate(${lanyardRotation}deg)`,
+                transform: `translateX(-50%) translateY(${window.innerWidth < 1024 ? '-64px' : '-96px'}) rotate(${lanyardRotation}deg)`,
                 transformOrigin: 'center top'
               }}
             >
@@ -424,9 +424,9 @@ Technical Lead | at MSP MIU
 
             {/* Card holder/badge reel simulation */}
            <div 
-  className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-24 transition-transform duration-200 ease-out"
+  className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-16 lg:-translate-y-24 transition-transform duration-200 ease-out"
   style={{
-    transform: `translateX(-50%) translateY(-96px) rotate(${lanyardRotation}deg)`,
+    transform: `translateX(-50%) translateY(${window.innerWidth < 1024 ? '-64px' : '-96px'}) rotate(${lanyardRotation}deg)`,
     transformOrigin: 'center top'
   }}
 >
