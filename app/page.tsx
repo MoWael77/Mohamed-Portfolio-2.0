@@ -390,7 +390,7 @@ Technical Lead | at MSP MIU
             <div 
               className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-16 lg:-translate-y-22 transition-transform duration-200 ease-out"
               style={{
-                transform: `translateX(-50%) translateY(${window.innerWidth < 1024 ? '-64px' : '-96px'}) rotate(${lanyardRotation}deg)`,
+                transform: `translateX(-50%) translateY(${typeof window !== 'undefined' && window.innerWidth < 1024 ? '-64px' : '-96px'}) rotate(${lanyardRotation}deg)`,
                 transformOrigin: 'center top'
               }}
             >
@@ -426,7 +426,7 @@ Technical Lead | at MSP MIU
            <div 
   className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-16 lg:-translate-y-24 transition-transform duration-200 ease-out"
   style={{
-    transform: `translateX(-50%) translateY(${window.innerWidth < 1024 ? '-64px' : '-96px'}) rotate(${lanyardRotation}deg)`,
+    transform: `translateX(-50%) translateY(${typeof window !== 'undefined' && window.innerWidth < 1024 ? '-64px' : '-96px'}) rotate(${lanyardRotation}deg)`,
     transformOrigin: 'center top'
   }}
 >
