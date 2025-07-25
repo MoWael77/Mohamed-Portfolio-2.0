@@ -48,7 +48,32 @@ Type 'help' to see available commands.`,
     },
   ])
 
-  
+  const [currentInput, setCurrentInput] = useState("")
+  const [currentTime, setCurrentTime] = useState("")
+  const [isProcessing, setIsProcessing] = useState(false)
+  const inputRef = useRef<HTMLInputElement>(null)
+  const terminalRef = useRef<HTMLDivElement>(null)
+  const [userHasScrolledUp, setUserHasScrolledUp] = useState(false)
+  const lastScrollPosition = useRef(0)
+
+  // Track scroll position
+  useEffect(() => {
+    const terminal = terminalRef.current
+    if (!terminal) return
+
+    const handleScroll = () => {
+      if (terminal.scrollTop < lastScrollPosition.current) {
+        setUserHasScrolledUp(true)
+      }
+      lastScrollPosition.current = terminal.scrollTop
+    }
+
+    terminal.addEventListener('scroll', handleScroll)
+    return () => {
+      terminal.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
+
   // Add this useEffect to trigger typing on mount
   useEffect(() => {
     const typeWelcomeMessage = async () => {
@@ -56,11 +81,6 @@ Type 'help' to see available commands.`,
     }
     typeWelcomeMessage()
   }, []) 
-  const [currentInput, setCurrentInput] = useState("")
-  const [currentTime, setCurrentTime] = useState("")
-  const [isProcessing, setIsProcessing] = useState(false)
-  const inputRef = useRef<HTMLInputElement>(null)
-  const terminalRef = useRef<HTMLDivElement>(null)
 
   const [rotateX, setRotateX] = useState(10)
   const [rotateY, setRotateY] = useState(-15)
@@ -155,12 +175,6 @@ Type 'help' to see available commands.`,
     const interval = setInterval(updateTime, 1000)
     return () => clearInterval(interval)
   }, [])
-
-  useEffect(() => {
-    if (terminalRef.current) {
-      terminalRef.current.scrollTop = terminalRef.current.scrollHeight
-    }
-  }, [commands])
 
   const commandResponses: { [key: string]: string } = {
     help: `Available commands:
@@ -281,6 +295,10 @@ Technical Lead | at MSP MIU
     const chars = text.split("")
     let typedText = ""
 
+    // Faster typing parameters
+    const baseDelay = 10 // Reduced from 30
+    const newlineDelay = 20 // Reduced from 50
+
     for (let i = 0; i < chars.length; i++) {
       typedText += chars[i]
 
@@ -288,7 +306,21 @@ Technical Lead | at MSP MIU
         prev.map((cmd, idx) => (idx === commandIndex ? { ...cmd, typedOutput: typedText, isTyping: true } : cmd)),
       )
 
-      const delay = chars[i] === "\n" ? 50 : Math.random() * 30 + 10
+      // Only auto-scroll if user hasn't scrolled up and we're near the bottom
+      if (terminalRef.current && !userHasScrolledUp) {
+        const { scrollTop, scrollHeight, clientHeight } = terminalRef.current
+        const isNearBottom = scrollHeight - (scrollTop + clientHeight) < 50
+        if (isNearBottom) {
+          setTimeout(() => {
+            if (terminalRef.current) {
+              terminalRef.current.scrollTop = terminalRef.current.scrollHeight
+              lastScrollPosition.current = terminalRef.current.scrollTop
+            }
+          }, 0)
+        }
+      }
+
+      const delay = chars[i] === "\n" ? newlineDelay : Math.random() * baseDelay + 5
       await new Promise((resolve) => setTimeout(resolve, delay))
     }
 
@@ -298,6 +330,9 @@ Technical Lead | at MSP MIU
         idx === commandIndex ? { ...cmd, output: formattedOutput, isTyping: false } : cmd
       ),
     )
+    
+    // Reset scroll tracking after command finishes
+    setUserHasScrolledUp(false)
   }
 
   const handleCommand = async (cmd: string) => {
@@ -305,6 +340,7 @@ Technical Lead | at MSP MIU
 
     if (trimmedCmd === "clear") {
       setCommands([])
+      setUserHasScrolledUp(false)
       return
     }
 
@@ -320,7 +356,8 @@ Technical Lead | at MSP MIU
 
     setCommands((prev) => [...prev, newCommand])
 
-    await new Promise((resolve) => setTimeout(resolve, 300))
+    // Reduced initial delay before typing starts
+    await new Promise((resolve) => setTimeout(resolve, 150))
 
     const commandIndex = commands.length
     await typeText(output, commandIndex)
@@ -341,6 +378,7 @@ Technical Lead | at MSP MIU
 
     if (command === "clear") {
       setCommands([])
+      setUserHasScrolledUp(false)
     } else {
       setCurrentInput(command)
       handleCommand(command)
@@ -349,15 +387,16 @@ Technical Lead | at MSP MIU
 
   return (
     <div className="min-h-screen bg-black text-green-400 font-mono">
-      <div className="p-4 border-b border-green-800">
-        <h1 className="text-2xl font-bold text-green-400">Mohamed Wael</h1>
-        <p className="text-green-600">DevSecOps Engineer</p>
+      {/* Centered Title Section */}
+      <div className="flex flex-col items-center justify-center pt-8 pb-4">
+        <h1 className="text-4xl font-bold text-green-400">Mohamed Wael</h1>
+        <p className="text-green-600 text-xl mt-2">DevSecOps Engineer</p>
       </div>
 
-      {/* Centered Navigation Bar */}
-      <div className="border-b border-green-800 p-2">
-        <div className="max-w-4xl mx-auto">
-          <div className="flex flex-wrap gap-4 text-sm justify-center">
+      {/* Enhanced Navigation Bar */}
+      <div className="border-y border-green-800 py-4 bg-black">
+        <div className="max-w-5xl mx-auto px-4">
+          <div className="flex flex-wrap gap-6 justify-center text-lg">
             {[
               "help",
               "about",
@@ -374,9 +413,11 @@ Technical Lead | at MSP MIU
               <button
                 key={cmd}
                 onClick={() => handleNavClick(cmd)}
-                className={`text-green-400 hover:text-green-300 transition-colors ${
-                  isProcessing ? "opacity-50 cursor-not-allowed" : ""
-                }`}
+                className={`
+                  text-green-400 hover:text-green-300 
+                  transition-colors duration-150
+                  ${isProcessing ? "opacity-50 cursor-not-allowed" : ""}
+                `}
                 disabled={isProcessing}
               >
                 {cmd}
@@ -386,7 +427,7 @@ Technical Lead | at MSP MIU
         </div>
       </div>
 
-      <div className="flex flex-col lg:flex-row h-[calc(100vh-120px)]">
+      <div className="flex flex-col lg:flex-row h-[calc(100vh-180px)]">
         <div className="lg:w-1/3 p-8 flex items-center justify-center border-r border-green-800 relative pt-16 lg:pt-8">
           <div className="relative">
             {/* Realistic Lanyard System */}
@@ -426,13 +467,13 @@ Technical Lead | at MSP MIU
             </div>
 
             {/* Card holder/badge reel simulation */}
-           <div 
-  className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-16 lg:-translate-y-24 transition-transform duration-200 ease-out"
-  style={{
-    transform: `translateX(-50%) translateY(${typeof window !== 'undefined' && window.innerWidth < 1024 ? '-64px' : '-96px'}) rotate(${lanyardRotation}deg)`,
-    transformOrigin: 'center top'
-  }}
->
+            <div 
+              className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-16 lg:-translate-y-24 transition-transform duration-200 ease-out"
+              style={{
+                transform: `translateX(-50%) translateY(${typeof window !== 'undefined' && window.innerWidth < 1024 ? '-64px' : '-96px'}) rotate(${lanyardRotation}deg)`,
+                transformOrigin: 'center top'
+              }}
+            >
               <div className="w-8 h-8 bg-gradient-to-br from-gray-300 to-gray-500 rounded-full shadow-lg border-2 border-gray-400">
                 <div className="absolute inset-1 bg-gradient-to-br from-gray-200 to-gray-400 rounded-full">
                   <div className="absolute top-1 left-1 w-2 h-2 bg-white opacity-50 rounded-full blur-sm"></div>
@@ -499,7 +540,11 @@ Technical Lead | at MSP MIU
         </div>
 
         <div className="lg:w-2/3 flex flex-col">
-          <div ref={terminalRef} className="flex-1 p-4 overflow-y-auto">
+          <div 
+            ref={terminalRef} 
+            className="flex-1 p-4 overflow-y-auto"
+            style={{ scrollBehavior: 'smooth' }}
+          >
             {commands.map((cmd, index) => (
               <div key={index} className="mb-4">
                 <div className="flex items-center mb-2">
