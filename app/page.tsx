@@ -395,8 +395,8 @@ Technical Lead | at MSP MIU
 
       {/* Enhanced Navigation Bar */}
       <div className="border-y border-green-800 py-4 bg-black">
-        <div className="max-w-5xl mx-auto px-4">
-          <div className="flex flex-wrap gap-6 justify-center text-lg">
+        <div className="max-w-5xl mx-auto px-2">
+          <div className="flex flex-wrap gap-4 justify-center text-lg">
             {[
               "help",
               "about",
