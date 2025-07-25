@@ -354,32 +354,35 @@ Technical Lead | at MSP MIU
         <p className="text-green-600">DevSecOps Engineer</p>
       </div>
 
+      {/* Centered Navigation Bar */}
       <div className="border-b border-green-800 p-2">
-        <div className="flex flex-wrap gap-4 text-sm">
-          {[
-            "help",
-            "about",
-            "projects",
-            "skills",
-            "experience",
-            "contact",
-            "education",
-            "certifications",
-            "leadership",
-            "sudo",
-            "clear",
-          ].map((cmd) => (
-            <button
-              key={cmd}
-              onClick={() => handleNavClick(cmd)}
-              className={`text-green-400 hover:text-green-300 transition-colors ${
-                isProcessing ? "opacity-50 cursor-not-allowed" : ""
-              }`}
-              disabled={isProcessing}
-            >
-              {cmd}
-            </button>
-          ))}
+        <div className="max-w-4xl mx-auto">
+          <div className="flex flex-wrap gap-4 text-sm justify-center">
+            {[
+              "help",
+              "about",
+              "projects",
+              "skills",
+              "experience",
+              "contact",
+              "education",
+              "certifications",
+              "leadership",
+              "sudo",
+              "clear",
+            ].map((cmd) => (
+              <button
+                key={cmd}
+                onClick={() => handleNavClick(cmd)}
+                className={`text-green-400 hover:text-green-300 transition-colors ${
+                  isProcessing ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+                disabled={isProcessing}
+              >
+                {cmd}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -445,7 +448,7 @@ Technical Lead | at MSP MIU
             >
               <div
                 ref={cardRef}
-                className="card bg-black rounded-lg border border-green-800 shadow-2xl w-64 h-80 overflow-hidden relative"
+                className="card bg-white rounded-lg border border-gray-400 shadow-2xl w-64 h-80 overflow-hidden relative"
                 style={{
                   transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY + cardSwing}deg) translateY(${translateY}px)`,
                   transformOrigin: "center top",
@@ -453,7 +456,7 @@ Technical Lead | at MSP MIU
                 }}
               >
                 {/* Card hole for lanyard */}
-                <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-green-800 rounded-full shadow-inner"></div>
+                <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-gray-400 rounded-full shadow-inner"></div>
                 
                 <div className="relative h-full w-full">
                   {/* Full card photo */}
