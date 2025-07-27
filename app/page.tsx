@@ -39,7 +39,7 @@ export default function TerminalPortfolio() {
   const [commands, setCommands] = useState<Command[]>([
     {
       command: "welcome",
-      output: `Hi, I'm Mohamed Wael, a Software, & Cybersecurity Engineer.
+      output: `Hi, I'm Mohamed Wael, DevSecOps, CyberSecurity & Software Engineer.
 
 Welcome to my interactive portfolio terminal!
 Type 'help' to see available commands.`,
@@ -192,16 +192,16 @@ leadership - Leadership experience
 clear - Clear terminal
 sudo - Access admin commands`,
 
-    about: `Mohamed Wael - Software & Cybersecurity Engineer
+    about: `Mohamed Wael - DevSecOps, CyberSecurity & Software Engineer
 
-I'm a passionate cybersecurity engineer specializng in penetration testing, software development and AI technologies,
+I'm a passionate cybersecurity engineer specializng in penetration testing ,DevSecOps, software development, AI technologies,
 full-stack development, and creating innovative digital solutions.
 
 I love building products that make a difference and solving complex
 problems with elegant, scalable solutions, discovering bugs and forensics.
 
 Location: Cairo, Egypt
-Focus: Full-Stack Development, Cloud Architecture, Pentesting & Bug-Bounty, SOC-Analyst, `,
+Focus: Full-Stack Development, Cloud Architecture, Pentesting & Bug-Bounty, DevSecOps, `,
 
     projects: `Featured Projects:
 
@@ -230,13 +230,13 @@ Programming Languages:
 JavaScript, Python, C, Java, C++, 
 
 AI/ML:
-TensorFlow, PyTorch, Scikit-learn, OpenAI API, Hugging Face
+TensorFlow, Three.js, Hand-Detector
 
 Frontend:
-React, Vue.js, Tailwind CSS, Three.js
+React, Vue.js, Tailwind CSS, 
 
 Backend:
-Node.js, Express, RESTAPI,
+Node.js, Express, REST-API,
 
 Cloud & DevOps:
 AWS, Docker, Kubernetes, CI/CD
